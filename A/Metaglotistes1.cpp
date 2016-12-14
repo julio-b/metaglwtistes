@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <limits>
 
 using namespace std;
 
@@ -16,6 +17,11 @@ int main(){
 	fstream fs;
     fs.open(fname.c_str());
 	while(fs.get(c)){
+            if(c=='\"'){
+                fs.ignore(numeric_limits<streamsize>::max(),'\"');
+            }
+            if(c=='\'')
+                fs.ignore(numeric_limits<streamsize>::max(),'\'');            
         if(c=='('){
             z.push(c);
         }
@@ -30,9 +36,9 @@ int main(){
         itsFine=false;
 
     if(itsFine)
-         cout<<"Yes";
+         cout<<"Yes\n";
     else
-         cout<<"No";
+         cout<<"No\n";
     fs.close();
 
 	return 0;
