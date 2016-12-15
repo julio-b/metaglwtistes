@@ -6,40 +6,83 @@
 
 using namespace std;
 
+void printMoves(string log){
+    string stackstring = "$";
+    cout<<"Περιεχομενα στοιβας\tκατασταση\tυπολειπα συμβολα εισοδου\n";
+        
+        while(!log.empty()){
+            cout<<stackstring<<"\t\t\t"<<"A\t\t"<<log<<endl;
+            if(log[0]=='('){
+                log.erase(0,1);
+                stackstring+="I";
+            }
+            else
+            if(log[0]==')'){
+                log.erase(0,1);
+                stackstring.erase(stackstring.size()-1);
+            }
+            if(stackstring.empty())
+                break;
+        }
+        cout<<stackstring<<"\t\t\t"<<"A\t\t"<<log<<endl;
+}
+
 int main(){
-    string fname;
-    string log="";
-	bool itsFine = true;
+	string fname;
+	string log="";
+	bool in_String = false;
+	bool escape_char = false;
 	char c;
 	stack<char> z;
 	cout<<"Give the name of the file\n";
 	cin>>fname;
 	fstream fs;
-    fs.open(fname.c_str());
+	fs.open(fname.c_str());
 	while(fs.get(c)){
-            if(c=='\"'){
-                fs.ignore(numeric_limits<streamsize>::max(),'\"');
-            }
-            if(c=='\'')
-                fs.ignore(numeric_limits<streamsize>::max(),'\'');            
-        if(c=='('){
-            z.push(c);
-        }
-        if(c==')'){
-            if(z.empty())
-                itsFine=false;
-            else
-                z.pop();
-        }
+		cout<<c;
+		if(in_String){
+			if(!escape_char){
+				switch(c){
+				 case '"':
+				 case '\'':
+					in_String=false;
+					break;
+				 case '\\':
+					escape_char=true;
+					break;
+				}
+			}else{
+				escape_char=false;
+			}
+		}else{
+			switch(c){
+			 case '(':
+				z.push(c);
+                                log+=c;
+				break;
+			 case ')':
+				if(z.empty()) goto exit_failure;
+                                log+=c;
+				z.pop();
+				break;
+			 case '"':
+			 case '\'':
+				in_String=true;
+				break;
+			}
+		}
 	}
-	if(!z.empty())
-        itsFine=false;
 
-    if(itsFine)
-         cout<<"Yes\n";
-    else
-         cout<<"No\n";
-    fs.close();
+	if(!z.empty()) goto exit_failure;
 
+exit_success:
+	fs.close();
+	cout<<"Yes\n";
+        printMoves(log);
 	return 0;
+exit_failure:
+	fs.close();
+	cout<<"No\n";
+        printMoves(log);
+	return 1;
 }
