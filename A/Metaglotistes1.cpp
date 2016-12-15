@@ -23,6 +23,7 @@ int main(){
 			if(!escape_char){
 				switch(c){
 				 case '"':
+				 case '\'':
 					in_String=false;
 					break;
 				 case '\\':
@@ -42,6 +43,7 @@ int main(){
 				z.pop();
 				break;
 			 case '"':
+			 case '\'':
 				in_String=true;
 				break;
 			}
