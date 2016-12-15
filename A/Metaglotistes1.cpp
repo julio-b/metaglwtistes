@@ -14,7 +14,7 @@ void printMoves(string log){
             cout<<stackstring<<"\t\t\t"<<"A\t\t"<<log<<endl;
             if(log[0]=='('){
                 log.erase(0,1);
-                stackstring+="(";
+                stackstring+="I";
             }
             else
             if(log[0]==')'){
