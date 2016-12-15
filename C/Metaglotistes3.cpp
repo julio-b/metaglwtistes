@@ -1,79 +1,69 @@
 #include <iostream>
-#include <vector>
 #include <string>
-#include <exception>
-
+using namespace std;
 int main(){
-    std::string str,str1="S";
-    std::cout<<"Give the string you want to check"<<std::endl;
-    std::cin>>str;
+    string str,str1="S";
+    cout<<"Give the string you want to check"<<endl;
+    cin>>str;
     int pos = 0;
     while(1){
-        if(pos==str1.size() || str[0]!='['){
-            break;
-        }
-        else
-        if(str1[pos]=='S'){
+        if(pos==str1.size() || str[0]!='[') break;
+        switch(str1[pos]){
+        case 'S':
             str1.replace(pos,1,"[A]");
-            std::cout<<str1<<std::endl;
+            cout<<str1<<endl;
             pos++;
-        }
-        else
-        if(str1[pos]=='A'){
+            break;
+        case 'A':
             str1.replace(pos,1,"BE");
-            std::cout<<str1<<std::endl;
-        }
-        else
-        if(str1[pos]=='B'){
-            if(str[pos]=='['){
+            cout<<str1<<endl;
+            break;
+        case 'B':
+            switch(str[pos]){
+            case '[':
                 str1.replace(pos,1,"S");
-                std::cout<<str1<<std::endl;
-            }
-            if(str[pos]=='x'){
+                cout<<str1<<endl;
+                break;
+            case 'x':
                 str1.replace(pos,1,"x");
                 pos++;
-                std::cout<<str1<<std::endl;
-            }
-            if(str[pos]=='y'){
+                cout<<str1<<endl;
+                break;
+            case 'y':
                 str1.replace(pos,1,"y");
                 pos++;
-                std::cout<<str1<<std::endl;
-            }
-            else{
+                cout<<str1<<endl;
                 break;
+            default:
+                goto f;
             }
-            
-        }
-        else
-        if(str1[pos]=='E'){
-            if(str[pos]==':'){
-                str1.replace(pos,1,":A");
-                std::cout<<str1<<std::endl;
-            pos++;
-            }
-            else if(str[pos]=='+'){
-                str1.replace(pos,1,"+A");
-                std::cout<<str1<<std::endl;
-            pos++;
-            }else{
-                str1.erase(pos,1);
-                std::cout<<str1<<std::endl;
-            }
-        }
-        else 
-            if(str1[pos]==']')pos++;
-        else
             break;
-        
+        case 'E':
+            switch(str[pos]){
+            case ':':
+                str1.replace(pos,1,":A");
+                cout<<str1<<endl;
+                pos++;
+                break;
+            case '+':
+                str1.replace(pos,1,"+A");
+                cout<<str1<<endl;
+                pos++;
+                break;
+            default:
+                str1.erase(pos,1);
+                cout<<str1<<endl;
+            }
+            break;
+        case ']':
+            pos++;
         }
-        
-    
-    if(str==str1){
-        std::cout<<"Analysis complete : The string belong in this languange\n";
-    }else{
-        std::cout<<"Analysis complete : The string does not belong in the language\n";
     }
-    
-    
+    if(str==str1){
+        cout<<"Analysis complete : The string belong in this language\n";
+    }else{
+        f:
+        cout<<"Analysis complete : The string does not belong in the language\n";
+    }
     return 0;
 }
