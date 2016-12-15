@@ -6,6 +6,27 @@
 
 using namespace std;
 
+void printMoves(string log){
+    string stackstring = "$";
+    cout<<"Περιεχομενα στοιβας\tκατασταση\tυπολειπα συμβολα εισοδου\n";
+        
+        while(!log.empty()){
+            cout<<stackstring<<"\t\t\t"<<"A\t\t"<<log<<endl;
+            if(log[0]=='('){
+                log.erase(0,1);
+                stackstring+="(";
+            }
+            else
+            if(log[0]==')'){
+                log.erase(0,1);
+                stackstring.erase(stackstring.size()-1);
+            }
+            if(stackstring.empty())
+                break;
+        }
+        cout<<stackstring<<"\t\t\t"<<"A\t\t"<<log<<endl;
+}
+
 int main(){
 	string fname;
 	string log="";
@@ -37,9 +58,11 @@ int main(){
 			switch(c){
 			 case '(':
 				z.push(c);
+                                log+=c;
 				break;
 			 case ')':
 				if(z.empty()) goto exit_failure;
+                                log+=c;
 				z.pop();
 				break;
 			 case '"':
@@ -55,9 +78,11 @@ int main(){
 exit_success:
 	fs.close();
 	cout<<"Yes\n";
+        printMoves(log);
 	return 0;
 exit_failure:
 	fs.close();
 	cout<<"No\n";
+        printMoves(log);
 	return 1;
 }
