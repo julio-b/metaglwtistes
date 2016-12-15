@@ -1,0 +1,8 @@
+int a;
+struct er{
+	bool b;
+	int rr;
+	char w;
+}
+
+function( ("erwesd\"sadwe"), (ewer, werqwe, "qwe( ( ( )"));
