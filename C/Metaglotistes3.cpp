@@ -11,28 +11,23 @@ int main(){
         switch(str1[pos]){
         case 'S':
             str1.replace(pos,1,"[A]");
-            cout<<str1<<endl;
             pos++;
             break;
         case 'A':
             str1.replace(pos,1,"BE");
-            cout<<str1<<endl;
             break;
         case 'B':
             switch(str[pos]){
             case '[':
                 str1.replace(pos,1,"S");
-                cout<<str1<<endl;
                 break;
             case 'x':
                 str1.replace(pos,1,"x");
                 pos++;
-                cout<<str1<<endl;
                 break;
             case 'y':
                 str1.replace(pos,1,"y");
                 pos++;
-                cout<<str1<<endl;
                 break;
             default:
                 goto f;
@@ -42,22 +37,20 @@ int main(){
             switch(str[pos]){
             case ':':
                 str1.replace(pos,1,":A");
-                cout<<str1<<endl;
                 pos++;
                 break;
             case '+':
                 str1.replace(pos,1,"+A");
-                cout<<str1<<endl;
                 pos++;
                 break;
             default:
                 str1.erase(pos,1);
-                cout<<str1<<endl;
             }
             break;
         case ']':
             pos++;
         }
+        cout<<str1<<endl;
     }
     if(str==str1){
         cout<<"Analysis complete : The string belong in this language\n";
