@@ -27,25 +27,44 @@ void printMoves(string log){
         cout<<stackstring<<"\t\t\t"<<"A\t\t"<<log<<endl;
 }
 
-int main(){
+int main(int argc, char** argv){
 	string fname;
 	string log="";
+	bool p_Moves = false;
 	bool in_String = false;
 	bool escape_char = false;
+	char quotes = '\0';
 	char c;
 	stack<char> z;
-	cout<<"Give the name of the file\n";
-	cin>>fname;
 	fstream fs;
-	fs.open(fname.c_str());
+
+	for(int i=1; i<argc; i++){ //! recheck loop
+		string ar = argv[i];
+		//cout<<ar;
+		if(ar=="-h" || ar=="--help"){
+			//print help here and exit
+			//break;
+			return 0;
+		}else if(ar=="-p"){
+			p_Moves = true;
+		}else{
+			fname = ar;
+			//break;
+		}
+	}
+	//change this to stdin pipe
+	while(fs.open(fname.c_str()) , !fs.is_open()){
+		cout<<"Give the name of the file\n";
+		cin>>fname;
+	}
+
 	while(fs.get(c)){
-		cout<<c;
 		if(in_String){
 			if(!escape_char){
 				switch(c){
 				 case '"':
 				 case '\'':
-					in_String=false;
+					if(quotes == c) in_String=false;
 					break;
 				 case '\\':
 					escape_char=true;
@@ -58,16 +77,17 @@ int main(){
 			switch(c){
 			 case '(':
 				z.push(c);
-                                log+=c;
+				log+=c;
 				break;
 			 case ')':
 				if(z.empty()) goto exit_failure;
-                                log+=c;
+				log+=c;
 				z.pop();
 				break;
 			 case '"':
 			 case '\'':
 				in_String=true;
+				quotes = c;
 				break;
 			}
 		}
@@ -75,14 +95,15 @@ int main(){
 
 	if(!z.empty()) goto exit_failure;
 
+//!! fix code duplicate
 exit_success:
 	fs.close();
-	cout<<"Yes\n";
-        printMoves(log);
+	cout<<"YES\n";
+	if(p_Moves) printMoves(log);
 	return 0;
 exit_failure:
 	fs.close();
-	cout<<"No\n";
-        printMoves(log);
-	return 1;
+	cout<<"NO\n";
+	if(p_Moves) printMoves(log);
+	return -1;
 }
