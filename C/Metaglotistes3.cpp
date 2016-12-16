@@ -49,7 +49,7 @@ int main(){
             break;
         case ']':
             pos++;
-        	continue;
+            continue;
         }
         cout<<str1<<endl;
     }
