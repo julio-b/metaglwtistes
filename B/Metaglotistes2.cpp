@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <stack>
+#include <random>
 /*
 S -> A|S+A
 A -> B|A*B
@@ -18,30 +19,38 @@ string A(strStack& s);
 string B(strStack& s);
 void printSteps(string str);
 string strReplaceAll(string str, string search, string replace);
+string S(bool step){ return step?"S+A":"A";}
+string A(bool step){ return step?"A*B":"B";}
+string B(int step){ return step/2?"a":step%2?"b":"c";}
 
 int main(int argc, char** argv){
+	bool rg = false;
 	strStack st;
 	string input="";
 	string p="S";
 	if(argc>=2) input=argv[1];
-	if(!isValidInput(input)) do{
+	if(!(rg = (input=="-r")) && !isValidInput(input)) do{
 		//cout<<"Δωσε την εκφραση\n";
-		cout<<"Type your expression\n";
+		cout<<"Type your expression or \"random\"\n";
 		cin>>input;
-	}while(!isValidInput(input) && (cout<<"Invalid expression. ", true));
+	}while((!(rg=(input=="random"))&&(!isValidInput(input))) && (cout<<"Invalid expression. ", true));
+	random_device rd;
+	mt19937 gen(rd());
+	uniform_int_distribution<> dib(0,1);
+	uniform_int_distribution<> dit(0,2);
 	st.push(input);
 	cout<<"\n";
 	printSteps(p);
 	for(int i=0; i<p.length();){
 		switch(p[i]){
 		 case 'S':
-			p.replace(i,1, S(st));
+			p.replace(i,1, !rg? S(st): S(dib(gen)));
 			break;
 		 case 'A':
-			p.replace(i,1, A(st));
+			p.replace(i,1, !rg? A(st): A(dib(gen)));
 			break;
 		 case 'B':
-			p.replace(i,1, B(st));
+			p.replace(i,1, !rg? B(st): B(dit(gen)));
 			break;
 		 default:
 			++i;
@@ -57,8 +66,6 @@ int main(int argc, char** argv){
 
 bool isValidInput(string str){
 	char c1, c2;
-	//for(int i=0; i<str.length();i++)
-	//	if((c=str[i])!='a'&&c!='b'&&c!='c'&&c!='+'&&c!='*') return false;
 	for(int i=0; i<str.length()-1;i++)
 		if(((c1=str[i])==(c2=str[i+1]))
 		 ||(!((c1=='+'||c1=='*')&&(c2=='a'||c2=='b'||c2=='c'))

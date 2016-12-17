@@ -1,2 +1,2 @@
 #Compile: g++ Metaglotistes.cpp
-#Usage:   ./a.out \<expr\>
+#Usage:   ./a.out [-r]/\<expr\>
