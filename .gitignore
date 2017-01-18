@@ -1,0 +1,16 @@
+#compiled objects
+*.o
+*.obj
+
+#executables
+*.out
+
+#swps
+*.swp
+*~
+
+#flex yy
+*.yy.c
+
+#met5
+met5_*
