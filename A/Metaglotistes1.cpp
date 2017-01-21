@@ -6,59 +6,45 @@
 
 using namespace std;
 
-void printMoves(string log){
-    string stackstring = "$";
-    cout<<"Περιεχομενα στοιβας\tκατασταση\tυπολειπα συμβολα εισοδου\n";
-        
-        while(!log.empty()){
-            cout<<stackstring<<"\t\t\t"<<"A\t\t"<<log<<endl;
-            if(log[0]=='('){
-                log.erase(0,1);
-                stackstring+="I";
-            }
-            else
-            if(log[0]==')'){
-                log.erase(0,1);
-                stackstring.erase(stackstring.size()-1);
-            }
-            if(stackstring.empty())
-                break;
-        }
-        cout<<stackstring<<"\t\t\t"<<"A\t\t"<<log<<endl;
-}
+void printSteps(string log);
 
 int main(int argc, char** argv){
-	string fname;
-	string log="";
+	string file_name="";
+	ifstream inputfs;
+	istream* in;
 	bool p_Moves = false;
 	bool in_String = false;
 	bool escape_char = false;
 	char quotes = '\0';
-	char c;
+	int errcode;
+	string log="";
 	stack<char> z;
-	fstream fs;
+	char c;
 
-	for(int i=1; i<argc; i++){ //! recheck loop
+	for(int i=1; i<argc; i++){
 		string ar = argv[i];
-		//cout<<ar;
 		if(ar=="-h" || ar=="--help"){
-			//print help here and exit
-			//break;
+			cout<<"Usage: "<<argv[0]<<" -p [filename]\n";
 			return 0;
 		}else if(ar=="-p"){
 			p_Moves = true;
+		}else if(!file_name.compare("")){
+			file_name = ar;
 		}else{
-			fname = ar;
-			//break;
+			cout<<"Invalid argument: "<<ar<<".\n";
+			return 1;
 		}
 	}
-	//change this to stdin pipe
-	while(fs.open(fname.c_str()) , !fs.is_open()){
-		cout<<"Give the name of the file\n";
-		cin>>fname;
+
+	inputfs.open(file_name.c_str());
+	in = inputfs.is_open() ? &inputfs : &cin;
+	
+	if(in == &cin){
+		if(file_name.compare("")) cout<<file_name<<" file failed!";
+		cout<<"Type your program.. <ENTER><CTRL-D> when you're done.\n";
 	}
 
-	while(fs.get(c)){
+	while(in->get(c)){
 		if(in_String){
 			if(!escape_char){
 				switch(c){
@@ -95,15 +81,36 @@ int main(int argc, char** argv){
 
 	if(!z.empty()) goto exit_failure;
 
-//!! fix code duplicate
 exit_success:
-	fs.close();
-	cout<<"YES\n";
-	if(p_Moves) printMoves(log);
-	return 0;
+	cout<<"\nYES\n";
+	errcode=0;
+	goto _exit;
 exit_failure:
-	fs.close();
-	cout<<"NO\n";
-	if(p_Moves) printMoves(log);
-	return -1;
+	cout<<"\nNO\n";
+	errcode=1;
+_exit:
+	if(p_Moves) printSteps(log);
+	if(inputfs.is_open()) inputfs.close();
+	return errcode;
 }
+
+void printSteps(string log){
+	string stackstring = "$";
+	cout<<"Περιεχομενα στοιβας\tκατασταση\tυπολειπα συμβολα εισοδου\n";
+	while(!log.empty()){
+		cout<<stackstring<<"\t\t\t"<<"A\t\t"<<log<<endl;
+		if(log[0]=='('){
+			log.erase(0,1);
+			stackstring+="I";
+		}
+		else
+			if(log[0]==')'){
+				log.erase(0,1);
+				stackstring.erase(stackstring.size()-1);
+			}
+		if(stackstring.empty())
+			break;
+	}
+	cout<<stackstring<<"\t\t\t"<<"A\t\t"<<log<<endl;
+}
+
