@@ -1,10 +1,13 @@
 %{
 #include "stdio.h"
 int sxima=0;
+char* names[] = {"", "γωνία", "", "τρίγωνο", "τετράγωνο"};
 %}
 onoma [ΑΒΓΔΕ]+
 
 %%
+
+[ \t\n]+
 
 "Δίνεται" {printf("%s : είναι ρήμα \n",yytext);}
 
@@ -15,10 +18,9 @@ onoma [ΑΒΓΔΕ]+
 }
 
 {onoma} {
-	if(sxima && yyleng/2==sxima)
-		printf("%s : είναι όνομα γεωμετρικής οντότητας\n",yytext);
-	else
-		printf("%s : δεν είναι όνομα γεωμετρικής οντότητας - %d\n",yytext,yyleng);
+	printf("%s : είναι όνομα γεωμετρικής οντότητας",yytext);
+	if(yyleng/2!=sxima) printf(", αλλα δεν αντιστοιχει σε %s",names[sxima]);
+	puts("");
 }
 .	;
 %%
