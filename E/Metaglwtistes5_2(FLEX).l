@@ -1,9 +1,13 @@
 %{
 #include "stdio.h"
 int sxima=0;
+char* names[] = {"", "γωνία", "", "τρίγωνο", "τετράγωνο"};
+
 char uniqyytext[2*6];
+int uniqyytextleng;
 int uniqStr();
 int f;
+
 %}
 onoma [ΑΒΓΔΕ]+
 
@@ -18,12 +22,12 @@ onoma [ΑΒΓΔΕ]+
 }
 
 {onoma} {
-	if(sxima && uniqStr()==sxima){
-		f = yyleng/2!=sxima;
-		printf("%s %c%s%c: είναι όνομα γεωμετρικής οντότητας\n",uniqyytext,
+	uniqyytextleng = uniqStr();
+	f = yyleng/2!=sxima;
+	printf("%s %c%s%c: είναι όνομα γεωμετρικής οντότητας",uniqyytext,
 			f?'(':'\0', f?yytext:"", f?')':'\0');
-	}else
-		printf("%s : δεν είναι όνομα γεωμετρικής οντότητας - %d\n",yytext,yyleng);
+	if(uniqyytextleng!=sxima) printf(", αλλα δεν αντιστοιχει σε %s",names[sxima]);
+	puts("");
 }
 .	;
 %%
