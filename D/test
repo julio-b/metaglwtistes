@@ -1,0 +1,3 @@
+var nunber_of_attendants, sums: integer;
+	ticket_price: real;
+	symbols, __etccc: char;
