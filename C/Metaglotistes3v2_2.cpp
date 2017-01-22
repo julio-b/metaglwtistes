@@ -25,10 +25,11 @@ string spaces = "";
 int main(){
     cout<<"Give the string you want to test\n";
     cin>>str;
+    cout<<"\n";
     if(procS() && str.empty()){
-        cout<<"Analysis complete: The string belong in the language.";
+        cout<<"Analysis complete: The string belong in the language.\n";
     }else{
-        cout<<"Analysis complete: Error.\n\t"<<str[0]<<" does not belong in the language.";
+        cout<<"Analysis complete: Error.\n\t"<<str[0]<<" does not belong in the language.\n";
     }
 }
 
