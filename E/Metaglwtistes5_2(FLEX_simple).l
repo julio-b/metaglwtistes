@@ -1,23 +1,16 @@
+%option noyywrap
 %{
 #include "stdio.h"
 char uniqyytext[2*6];
-int uniqyytextleng;
 int uniqStr();
 int f;
 %}
 onoma [ΑΒΓΔΕ]+
-
 %%
-
 "Δίνεται" {printf("%s : είναι ρήμα \n",yytext);}
-
-"γωνία"|"τρίγωνο"|"τετράγωνο" {
-	printf("%s : είναι γεωμετρική οντότητα\n",yytext);
-}
-
+"γωνία"|"τρίγωνο"|"τετράγωνο" {printf("%s : είναι γεωμετρική οντότητα\n",yytext);}
 {onoma} {
-	uniqyytextleng = uniqStr();
-	f = yyleng/2!=uniqyytextleng;
+	f = yyleng/2!=uniqStr();
 	printf("%s %c%s%c: είναι όνομα γεωμετρικής οντότητας\n",uniqyytext,
 			f?'(':'\0', f?yytext:"", f?')':'\0');
 }
